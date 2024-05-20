@@ -37,7 +37,7 @@
     width: 50%;
     display: flex;
     justify-content: space-between;
-
+    max-width:819px;
   }
 .dateInfo {
     color:white;
@@ -55,7 +55,10 @@
   padding: 0;
   list-style: none;
   font-size: 1.4rem;
-  width:50%;
+  width:80%;
+  max-width:800px;
+  min-width:622px;
+
 }
 
 .calendar-day {
@@ -100,8 +103,30 @@
   top: .5rem;
   left: .5rem;
 }
+.calendar-day__content {
+  background: #73868a;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  height: 5rem; /* Set a fixed height for the content */
+  overflow-y: auto; 
+}
 
+.calendar-day__content div {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.5rem;
+  margin-top: .5em;
+  border-radius: 0.3rem;
+  color: #fff;
+  font-size: 1.2rem;
+  word-wrap: break-word;
+}
+.calendar-day__content div:first-child {
+  margin-top: 3rem;
+}
 @media screen and (max-width: 40rem) {
+  .calendar {
+min-width:200px;
+  }
   .calendar-day {
     margin: 0 0 2px;
   }
@@ -129,6 +154,7 @@
 
   .calendar-day__content {
     padding: 0 0 20%;
+    margin: .5rem 0 0 0;
   }
 }
 /* Event Form Start */
@@ -143,9 +169,11 @@
 }
 
 @media screen and (min-width: 40rem) {
+  
   .calendar {
     display: flex;
     flex-wrap: wrap;
+
   }
 
   .calendar-day {
@@ -178,5 +206,6 @@
 
   .calendar-day__content {
     padding-bottom: 100%;
+
   }
 }

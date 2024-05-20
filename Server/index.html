@@ -40,7 +40,7 @@
         <input type="time" id="startTime" name="startTime">
         <label for="endTime">End Time:</label>
         <input type="time" id="endTime" name="endTime"> -->
-      <select id="eventYear">
+      <select id="eventYears">
         <option value="2024">2024</option>
         <option value="2025">2025</option>
         <option value="2026">2026</option>
@@ -69,6 +69,15 @@
         <option value="9">October</option>
         <option value="10">November</option>
         <option value="11">December</option>
+      </select>
+      <select id="eventYear">
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+        <option value="2027">2027</option>
+        <option value="2028">2028</option>
+        <option value="2029">2029</option>
+        <option value="2030">2030</option>
       </select>
       <div class="monthButtons">
         <button class="prevMonth">
@@ -226,7 +235,12 @@
   <!-- <script src="app.js"></script> -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      fetch('events.json')
+
+    // Get current year
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+
+      fetch(`events_${currentYear}.json`)
         .then(response => response.json())
         .then(data => {
           const events = data.events;
@@ -241,7 +255,7 @@
           const currentMonth = currentDate.getMonth();
           const currentYear = currentDate.getFullYear();
           const currentDay = currentDate.getDate();
-          const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+          const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
 
           function updateDateInfo() {
             const dateInfo = document.getElementById('dateInfo');
@@ -250,55 +264,99 @@
           }
 
           function updateDays() {
+
             const year = eventYear.value;
             const month = eventMonth.value;
             const monthName = eventMonth.options[eventMonth.selectedIndex].text;
 
-            const days = events[year][monthName] || {};
+            fetch(`events_${year}.json`)
+          .then(response => response.json())
+          .then(data => {
+
+            // const days = events[year][monthName] || {};
+            const eventData = data.events[year][monthName] || {};
 
             eventDay.innerHTML = '';
 
-            Object.keys(days).forEach(day => {
+            Object.keys(eventData).forEach(day => {
               const option = document.createElement('option');
               option.value = day;
               option.textContent = day;
               eventDay.appendChild(option);
             });
 
-            updateCalendar(monthName, days);
+            updateCalendar(monthName, eventData);
+          })
+        .catch(error => console.error('Error fetching events:', error));
           }
 
-          function updateCalendar(monthName, days) {
-            const calendar = document.querySelector('.calendar');
-            calendar.innerHTML = '';
+// Define a function to calculate the day of the week using Zeller's Congruence formula
+// h = (q + (13 * (m + 1) / 5) + K + (K / 4) + (J / 4) - (2 * J)) % 7
+function calculateDayOfWeek(year, month, day) {
+  // Adjust the month for January and February as per Zeller's Congruence
+  if (month < 3) {
+    month += 12;
+    year -= 1;
+  }
 
-            const year = eventYear.value;
-            const month = eventMonth.value;
+  const q = day; // Day of the month
+  const m = month + 1; // Adjusted month
+  const K = year % 100; // Year of the century
+  const J = Math.floor(year / 100); // Zero-based century
+
+  // Calculate the day of the week using Zeller's Congruence formula
+  const h = (q + Math.floor((13 * (m + 1)) / 5) + K + Math.floor(K / 4) + Math.floor(J / 4) - (2 * J)) % 7;
+
+  // Convert the result to match the indexing of your daysOfWeek array
+  return (h + 5) % 7; // (0 = Saturday, 1 = Sunday, ..., 6 = Friday)
+}
 
 
 
-  const firstDayOfMonth = new Date(year, month, 1);
+function updateCalendar(monthName, days) {
+    const calendar = document.querySelector('.calendar');
+    calendar.innerHTML = '';
 
-            Object.keys(days).forEach(day => {
-              const li = document.createElement('li');
-              li.className = 'calendar-day';
-              const span = document.createElement('span');
-              span.className = 'calendar-day__number';
-              span.textContent = day;
+    const year = eventYear.value;
+    const month = eventMonth.value;
 
-              firstDayOfMonth.setDate(day);
-              const dayOfWeek = firstDayOfMonth.getDay();
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+    const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat"];
+
+    for (let day = 1; day <= Object.keys(days).length; day++) {
+        const li = document.createElement('li');
+        li.className = 'calendar-day';
+        const span = document.createElement('span');
+        span.className = 'calendar-day__number';
+        span.textContent = day;
+
+        // const dayOfWeekIndex = (firstDayOfMonth.getDay() + day - 1) % 7; // Calculate the day of the week for the current day
+        
+        const date = new Date(year, month, day);
+        const dayOfWeekIndex = date.getDay();
+
+        const dayOfWeek = daysOfWeek[dayOfWeekIndex];
+
+        li.dataset.weekday = dayOfWeek;
+        li.appendChild(span);
 
 
-              li.dataset.weekday = daysOfWeek[dayOfWeek];
+        const div = document.createElement('div');
+        div.className = 'calendar-day__content';
 
-              li.appendChild(span);
-              const div = document.createElement('div');
-              div.className = 'calendar-day__content';
-              li.appendChild(div);
-              calendar.appendChild(li);
+        if (days[day]) {
+            days[day].forEach(event => {
+                const eventDiv = document.createElement('div');
+                eventDiv.textContent = event;
+                div.appendChild(eventDiv);
             });
-          }
+        }
+
+        li.appendChild(div);
+        calendar.appendChild(li);
+    }
+}
 
           eventMonth.addEventListener('change', updateDays);
           eventYear.addEventListener('change', updateDays);
@@ -324,6 +382,7 @@
           // eventMonth.value = currentMonth;
           // eventYear.value = currentYear;
           // dateInfo.textContent = currentMonth
+          
           eventMonth.selectedIndex = currentMonth;
           updateDateInfo();
           updateDays();

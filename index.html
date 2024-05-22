@@ -5,54 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="Server/style.css">
 </head>
 
 <body>
   <main class="outterContainer">
-    <div class="event-form">
-      <h2>Add Event</h2>
-      <input type="text" id="eventTitle" placeholder="Event Title">
-      <select id="eventColor">
-        <option value="red">Red</option>
-        <option value="white">White</option>
-        <option value="blue">Blue</option>
-        <option value="blue">Gold</option>
-      </select>
-      <select id="eventMonths">
-        <option value="0">January</option>
-        <option value="1">February</option>
-        <option value="2">March</option>
-        <option value="3">April</option>
-        <option value="4">May</option>
-        <option value="5">June</option>
-        <option value="6">July</option>
-        <option value="7">August</option>
-        <option value="8">September</option>
-        <option value="9">October</option>
-        <option value="10">November</option>
-        <option value="11">December</option>
-      </select>
-      <select id="eventDay">
-        <!-- Options will be generated dynamically using JavaScript -->
-      </select>
-      <!-- <label for="startTime">Start Time:</label>
-        <input type="time" id="startTime" name="startTime">
-        <label for="endTime">End Time:</label>
-        <input type="time" id="endTime" name="endTime"> -->
-      <select id="eventYears">
-        <option value="2024">2024</option>
-        <option value="2025">2025</option>
-        <option value="2026">2026</option>
-        <option value="2027">2027</option>
-        <option value="2028">2028</option>
-        <option value="2029">2029</option>
-        <option value="2030">2030</option>
-      </select>
-      <button id="addEventButton">Add Event</button>
-      <button id="removeEventButton">Remove Event</button>
-    </div>
-    <!-- Date Info -->
+   
     <div class="dateContainer">
       <h2 class="dateInfo" id="dateInfo">
         <!-- <span>May 10, 2024</span> -->
@@ -98,20 +56,19 @@
 
       </li>
       <li class="calendar-day calendar-day--past calendar-day--not-month" data-weekday="Wed" data-week="39">
-        <!-- <span class="calendar-day__number">28</span> -->
+
 
       </li>
       <li class="calendar-day calendar-day--past calendar-day--entry calendar-day--not-month" data-weekday="Thu"
         data-week="39">
-        <!-- <span class="calendar-day__number">29</span> -->
 
       </li>
       <li class="calendar-day calendar-day--past calendar-day--not-month" data-weekday="Fri" data-week="39">
-        <!-- <span class="calendar-day__number">30</span> -->
+
 
       </li>
       <li class="calendar-day calendar-day--past calendar-day--entry" data-weekday="Sat" data-week="39">
-        <!-- <span class="calendar-day__number">01</span> -->
+
 
       </li>
       <li class="calendar-day calendar-day--past calendar-day--entry" data-weekday="Sun" data-week="39">
@@ -233,8 +190,8 @@
       </li>
     </ol>
   </main>
-  <script src="app.js"></script>
-  
+  <!-- <script src="app.js"></script> -->
+  <script src="Server/app.js"></script>
 </body>
 
 </html>

@@ -1,120 +1,146 @@
+document.addEventListener('DOMContentLoaded', function () {
 
-const dateInfo = document.querySelector('#dateInfo');
-const prevMonth = document.querySelector('.prevMonth');
-const nextMonth = document.querySelector('.nextMonth');
-const currentDate = new Date();
+    // Get current year
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
 
-const monthInx = currentDate.getMonth();
-const dayOfMonth = currentDate.getDate();
-const year = currentDate.getFullYear();
-const dayOfWeek = currentDate.getDay();
+    fetch(`/Server/events_${currentYear}.json`)
+        .then(response => response.json())
+        .then(data => {
+            // Grab Json object
+            const events = data.events;
 
-const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const eventMonth = document.getElementById('eventMonth');
+            const eventDay = document.getElementById('eventDay');
+            const eventYear = document.getElementById('eventYear');
+            // Month buttons
+            const prevButton = document.querySelector('.prevMonth');
+            const nextButton = document.querySelector('.nextMonth');
 
-const months = [
-    "January",
-    "Febuary",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "september",
-    "October",
-    "November",
-    "December"
-];
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
+            const currentDay = currentDate.getDate();
+            const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-
-
-let currentMonthIndex = new Date().getMonth();
-
-function updateMonth() {
-const calendar = document.querySelector('.calendar');
-const dateInfo = document.querySelector('#dateInfo');
-dateInfo.innerHTML = "";
-const dayElements = calendar.querySelectorAll('.calendar-day__number');
-const year = currentDate.getFullYear();
-const dayName = daysOfWeek[dayOfWeek];
-const monthName = months[currentMonthIndex];
-const fullDate = `${monthName} ${dayOfMonth} ${dayName} ${year}`;
-const dateSpan = document.createElement('span');
-dateSpan.textContent = fullDate;
-dateInfo.appendChild(dateSpan);
-}
-function populateDays() {
-    const eventDaySelect = document.querySelector('#eventDay');
-    eventDaySelect.innerHTML = '';
-    for (let i = 1; i <= 31; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = i;
-        eventDaySelect.appendChild(option);
-    }
-}
-
-function addEvent() {
-    const eventTitle = document.querySelector('#eventTitle').value;
-    const eventSubject = document.querySelector('#eventSubject').value;
-    const eventMonth = document.querySelector('#eventMonth').value;
-    const eventDay = document.querySelector('#eventDay').value;
-    const eventHour = document.querySelector('#eventHour').value;
-    const eventMinute = document.querySelector('#eventMinute').value;
-    const eventYear = document.querySelector('#eventYear').value;
-    const eventColor = document.querySelector('#eventColor').value;
-
-    const eventContainer = document.querySelector('.calendar-day__content')
-
-    if (eventTitle && eventSubject && eventMonth && eventDay && eventHour !== "" && eventMinute !== "" && eventYear) {
-        // Find the correct calendar-day__content element
-        const calendarDays = document.querySelectorAll('.calendar-day');
-        // let targetDayElement = null;
-        calendarDays.forEach(dayElement => {
-            const dayNumber = dayElement.querySelector('.calendar-day__number').textContent;
-            if (parseInt(dayNumber) === parseInt(eventDay)) {
-                targetDayElement = dayElement.querySelector('.calendar-day__content');
+            function updateDateInfo() {
+                const dateInfo = document.getElementById('dateInfo');
+                const fullDate = `${eventMonth.options[eventMonth.selectedIndex].text} ${currentDay}, ${currentYear}`;
+                dateInfo.textContent = fullDate;
             }
-        });
-    }
-        if (targetDayElement) {
-            const eventElement = document.createElement('div');
-            eventElement.className = 'event';
-            eventElement.style.backgroundColor = eventColor;
-            eventElement.textContent = `Title: ${eventTitle}, Subject: ${eventSubject}, Date: ${months[eventMonth]} ${eventDay}, ${eventYear} at ${eventHour}:${eventMinute}`;
-            targetDayElement.appendChild(eventElement);
 
-            // Clear the input fields
-            document.querySelector('#eventTitle').value = '';
-            document.querySelector('#eventSubject').value = '';
-            document.querySelector('#eventMonth').value = '0';
-            document.querySelector('#eventDay').value = '';
-            document.querySelector('#eventHour').value = '';
-            document.querySelector('#eventMinute').value = '';
-            document.querySelector('#eventYear').value = '';
-            document.querySelector('#eventColor').value = 'red';
+            function updateDays() {
+                const year = eventYear.value;
+                const month = eventMonth.value;
+                const monthName = eventMonth.options[eventMonth.selectedIndex].text;
 
-    }
-}
+                fetch(`/Server/events_${year}.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const eventData = data.events[year][monthName] || {};
+
+                        if (eventDay) {
+                            eventDay.innerHTML = '';
+                            Object.keys(eventData).forEach(day => {
+                                const option = document.createElement('option');
+                                option.value = day;
+                                option.textContent = day;
+                                eventDay.appendChild(option);
+                            });
+                        }
+                        updateCalendar(monthName, eventData);
+                    })
+                    .catch(error => console.error('Error fetching events:', error));
+            }
+
+            function updateCalendar(monthName, days) {
+                const calendar = document.querySelector('.calendar');
+                calendar.innerHTML = '';
+
+                const year = eventYear.value;
+                const month = parseInt(eventMonth.value);
+
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
 
 
-document.addEventListener("DOMContentLoaded", function() {
-    updateMonth()
-    populateDays()
-// Month Buttons
+                // Insert empty days to align the 1st of the month to Sunday
+                for (let i = 0; i < firstDayOfMonth; i++) {
+                    const li = document.createElement('li');
+                    li.className = 'calendar-day empty';
 
+                    const dayOfWeekIndex = (0 + i) % 7;
+                    const dayOfWeek = daysOfWeek[dayOfWeekIndex];
 
+        li.dataset.weekday = dayOfWeek;
 
-document.querySelector('.prevMonth').addEventListener('click', function() {
-    currentMonthIndex = (currentMonthIndex - 1) % months.length;
-    updateMonth();
-});
+                    calendar.appendChild(li);
+                }
 
-document.querySelector('.nextMonth').addEventListener('click', function() {
-    currentMonthIndex = (currentMonthIndex + 1) % months.length;
-    updateMonth();
-});
+                for (let day = 1; day <= lastDayOfMonth; day++) {
+                    const li = document.createElement('li');
+                    li.className = 'calendar-day';
+                    const span = document.createElement('span');
+                    span.className = 'calendar-day__number';
+                    span.textContent = day;
 
-document.querySelector('#addEventButton').addEventListener('click', addEvent);
+                    const dayOfWeekIndex = (firstDayOfMonth + day - 1) % 7;
+                    const dayOfWeek = daysOfWeek[dayOfWeekIndex];
 
+                    li.dataset.weekday = dayOfWeek;
+                    li.appendChild(span);
+
+                    const div = document.createElement('div');
+                    div.className = 'calendar-day__content';
+
+                    if (days[day]) {
+                        days[day].forEach(event => {
+                            const eventDiv = document.createElement('div');
+                            eventDiv.textContent = event;
+                            div.appendChild(eventDiv);
+                        });
+                    }
+
+                    li.appendChild(div);
+                    calendar.appendChild(li);
+                }
+                const remainingDays = (7 - (lastDayOfMonth + firstDayOfMonth - 1) % 7) % 7;
+                for (let i = 0; i < remainingDays; i++) {
+                    const li = document.createElement('li');
+                    li.className = 'calendar-day empty';
+            
+                    const dayOfWeekIndex = (firstDayOfMonth + lastDayOfMonth + i - 1) % 7;
+                    const dayOfWeek = daysOfWeek[dayOfWeekIndex];
+            
+                    li.dataset.weekday = dayOfWeek;
+                    calendar.appendChild(li);
+                }
+            }
+
+            eventMonth.addEventListener('change', updateDays);
+            eventYear.addEventListener('change', updateDays);
+            prevButton.addEventListener('click', () => {
+                if (eventMonth.selectedIndex > 0) {
+                    eventMonth.selectedIndex--;
+                } else if (eventYear.selectedIndex > 0) {
+                    eventYear.selectedIndex--;
+                    eventMonth.selectedIndex = 11;
+                }
+                updateDays();
+            });
+            nextButton.addEventListener('click', () => {
+                if (eventMonth.selectedIndex < 11) {
+                    eventMonth.selectedIndex++;
+                } else if (eventYear.selectedIndex < eventYear.options.length - 1) {
+                    eventYear.selectedIndex++;
+                    eventMonth.selectedIndex = 0;
+                }
+                updateDays();
+            });
+
+            eventMonth.selectedIndex = currentMonth;
+            updateDateInfo();
+            updateDays();
+        })
+        .catch(error => console.error('Error fetching events:', error));
 });

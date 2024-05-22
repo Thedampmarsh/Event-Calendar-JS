@@ -1,19 +1,4 @@
-/* body {
-    background-color: var(--main);
-    display: flex; 
-    align-items: center;
-    justify-content: center;
-  
-  }
-   */
-   /* .container {
-    display: inline-block;
-    background-color: var(--white);
-    border-radius: 35px;
-    padding: 0 1em;
-    margin-top: 2em;
-  } */
-  html, body {
+html, body {
     margin: 0;
     padding: 0;
   }
@@ -26,52 +11,134 @@
     background: #000000;
     height: 100%;
     font-family: Helvetica, Arial, serif;
+    color: #ccc;
   }
   .outterContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
   }
   /* date design start */
   .dateContainer {
+    margin-top: 3rem;
     width: 50%;
+    max-width:400px;
+    min-width:351px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #73868a;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    max-width:819px;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 .dateInfo {
-    color:white;
+    color:rgb(0, 0, 0);
     margin-left:2rem;
     margin-top:2.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
 
 }
+#eventMonth,
+#eventYear {
+  padding: 8px 12px;
+  border: none;
+  background-color: #000000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1rem;
+  outline: none;
+}
 .monthButtons {
+  display: flex;
+  align-items: center;
     margin-top:3rem;
     margin-right:2rem;
+    margin-bottom:3rem ;
+}
+.monthButtons button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+.monthButtons button:hover {
+  background-color: #FFD700;
+  color: #000000;
+}
+
+/* Style for the '<' and '>' buttons */
+.monthButtons button:first-child {
+  margin-right: 8px;
+}
+
+.monthButtons button:last-child {
+  margin-left: 8px;
 }
   /* Cal;endar Start */
 .calendar {
   margin: 4rem;
   padding: 0;
   list-style: none;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
   width:80%;
   max-width:800px;
   min-width:622px;
-
 }
 
 .calendar-day {
-  color: #fff;
+  color: #ffffff;
   position: relative;
   box-sizing: border-box;
+  width:90%;
 }
 
-/* .calendar-day:nth-child(7n+1)::before {
-  content: attr(data-week);
-  position: absolute;
-  color: #ff0000;
-} */
+/* Styling for date info */
+.dateInfo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Styling for select elements */
+#eventMonth,
+#eventYear {
+  padding: 10px;
+  border: none;
+  background-color: #000000;
+  color: #ccc;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for select options */
+#eventMonth option,
+#eventYear option {
+  padding: 10px;
+  color: #ccc;
+}
+
+/* Styling for navigation buttons */
+.monthButtons button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #000000;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+/* Styling for navigation buttons on hover */
+.monthButtons button:hover {
+  background-color: #FFD700;
+  color: #000000;
+}
 
 .calendar-day::after {
   content: attr(data-weekday);
@@ -110,12 +177,13 @@
   height: 5rem; /* Set a fixed height for the content */
   overflow-y: auto; 
 }
-
+.empty{
+  background: #89a5aa;
+}
 .calendar-day__content div {
   background: rgba(255, 255, 255, 0.2);
   padding: 0.2rem 0.5rem;
   margin-top: .5em;
-  border-radius: 0.3rem;
   color: #fff;
   font-size: 1.2rem;
   word-wrap: break-word;
@@ -123,9 +191,68 @@
 .calendar-day__content div:first-child {
   margin-top: 3rem;
 }
+.event-form {
+  max-width: 382px;
+  min-width: 225px;
+  width: 30%;
+  background-color: #73868a;;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.event-form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #000000;
+}
+
+.event-form input[type="text"],
+.event-form select {
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  outline: none;
+  background-color: #000000;
+  color: #ccc;
+}
+
+.event-form select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#000" d="M5 9l7 7 7-7H5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+  background-size: 14px auto;
+}
+
+.event-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.event-form button:hover {
+  background-color: #FFD700;
+  color: black;
+}
 @media screen and (max-width: 40rem) {
   .calendar {
 min-width:200px;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
   }
   .calendar-day {
     margin: 0 0 2px;

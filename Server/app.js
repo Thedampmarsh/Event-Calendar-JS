@@ -92,14 +92,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const div = document.createElement('div');
                     div.className = 'calendar-day__content';
+                    // console.log(day.days["2024"]["January"]);
+                    const eventDiv = document.createElement('a');
+                    days[day].forEach(event => {
+                                const { name, embeddedLink, color } = event;
+                                if (name || color || embeddedLink) {
+                                    if (embeddedLink) {
+                                        eventDiv.href = embeddedLink;
+                                    }
+                            
+                                    // Check if color exists before setting background color
+                                    if (color) {
+                                        eventDiv.style.backgroundColor = color;
+                                    }
+                            
+                                    // Check if name exists before setting text content
+                                    if (name) {
+                                        eventDiv.textContent = name;
+                                    }
+                                    div.appendChild(eventDiv);         
+                                    console.log(name, embeddedLink, color);
+                                    console.log('Event details:', { name, embeddedLink, color });
+                                    console.log('Event element:', eventDiv);
+                                }
+                        })
+            
 
-                    if (days[day]) {
-                        days[day].forEach(event => {
-                            const eventDiv = document.createElement('div');
-                            eventDiv.textContent = event;
-                            div.appendChild(eventDiv);
-                        });
-                    }
+                    
 
                     li.appendChild(div);
                     calendar.appendChild(li);
@@ -111,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
             
                     const dayOfWeekIndex = (firstDayOfMonth + lastDayOfMonth + i - 1) % 7;
                     const dayOfWeek = daysOfWeek[dayOfWeekIndex];
-            
+                    // console.log("First day of the month:", firstDayOfMonth);
                     li.dataset.weekday = dayOfWeek;
                     calendar.appendChild(li);
                 }

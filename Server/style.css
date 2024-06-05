@@ -180,13 +180,14 @@ html, body {
 .empty{
   background: #89a5aa;
 }
-.calendar-day__content div {
+.calendar-day__content a {
   background: rgba(255, 255, 255, 0.2);
   padding: 0.2rem 0.5rem;
-  margin-top: .5em;
+  margin-top: 2.5rem;
   color: #fff;
   font-size: 1.2rem;
   word-wrap: break-word;
+  display: block;
 }
 .calendar-day__content div:first-child {
   margin-top: 3rem;
@@ -334,5 +335,11 @@ justify-content: center;
   .calendar-day__content {
     padding-bottom: 100%;
 
+  }
+}
+@media only screen and (max-width: 640px) {
+  .calendar-day.empty,
+  .calendar-day__number[data-weekday] {
+      display: none;
   }
 }

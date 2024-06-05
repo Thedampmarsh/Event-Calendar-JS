@@ -2,8 +2,15 @@
 "events": {
       "2024": {
         "January": {
-          "1": ["Thunderdome pre season"],
-          "2": ["Training courese"],
+          "1": [
+            {"name":"Thunderdome pre season"},
+            {"color":"gold"},
+            {"embeddedLink":"https://google.com"}
+            ],
+          "2": [
+            {"name":"Training courese"},
+            {"embeddedLink":"https://google.com"}
+          ],
           "3": [],
           "4": [],
           "5": [],
@@ -131,7 +138,9 @@
           "30": []
         },
         "May": {
-          "1": [],
+          "1": [
+            {"name":"Thunderdome pre season"}
+          ],
           "2": [],
           "3": [],
           "4": [],

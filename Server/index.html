@@ -10,9 +10,10 @@
 
 <body>
   <main class="outterContainer">
-    <div class="event-form">
+    <form class="event-form">
       <h2>Add Event</h2>
       <input type="text" id="eventTitle" placeholder="Event Title">
+      <input type="url" id="linkInput" name="link" placeholder="https://example.com" required>
       <select id="eventColor">
         <option value="red">Red</option>
         <option value="white">White</option>
@@ -49,9 +50,9 @@
         <option value="2029">2029</option>
         <option value="2030">2030</option>
       </select>
-      <button id="addEventButton">Add Event</button>
+      <button type="submit" id="addEventButton">Add Event</button>
       <button id="removeEventButton">Remove Event</button>
-    </div>
+    </form>
     <!-- Date Info -->
     <div class="dateContainer">
       <h2 class="dateInfo" id="dateInfo">
@@ -82,10 +83,14 @@
       </select>
       <div class="monthButtons">
         <button class="prevMonth">
-          < </button>
+          </button>
             <button class="nextMonth">></button>
       </div>
     </div>
+<section class="eventList">
+
+
+</section>
     <!-- Start of calendar -->
     <ol class="calendar">
       <li class="calendar-day calendar-day--begin-week calendar-day--past calendar-day--not-month" data-weekday="Mon"

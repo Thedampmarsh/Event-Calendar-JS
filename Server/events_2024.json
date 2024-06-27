@@ -3,16 +3,23 @@
       "2024": {
         "January": {
           "1": [
-            {"name":"Thunderdome pre season"},
-            {"color":"gold"},
+            {"name":"Thunderdome pre season: 3:00 AM - 10 PM"},
+            {"color": "red"},
             {"embeddedLink":"https://google.com"}
             ],
           "2": [
-            {"name":"Training courese"},
+            {"name":"Thunderdome main season: 3:00 AM - 10 PM"},
+            {"color": "teal"},
             {"embeddedLink":"https://google.com"}
           ],
-          "3": [],
-          "4": [],
+          "3": [
+            {"name":"Thunderdome pre season: 3:00 AM - 10 PM"},
+            {"color": "blue"},
+          {"embeddedLink":"https://google.com"}],
+          "4": [
+            {"name":"Thunderdome pre season: 3:00 AM - 10 PM"},
+            {"color": "goldenrod"},
+            {"embeddedLink":"https://google.com"}],
           "5": [],
           "6": [],
           "7": [],
@@ -139,7 +146,9 @@
         },
         "May": {
           "1": [
-            {"name":"Thunderdome pre season"}
+            {"name":"Thunderdome main season: 3:00 AM - 10 PM"},
+            {"color": "teal"},
+            {"embeddedLink":"https://google.com"}
           ],
           "2": [],
           "3": [],

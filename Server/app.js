@@ -49,9 +49,48 @@ document.addEventListener('DOMContentLoaded', function () {
                             });
                         }
                         updateCalendar(monthName, eventData);
+
                     })
                     .catch(error => console.error('Error fetching events:', error));
             }
+
+            function addEventList() {
+                const eventList = document.querySelector('.eventList')
+                console.log(events);
+   
+                for (const year in events) {
+                    for (const month in events[year]) {
+                        for (const day in events[year][month]) {
+                            const dayEvents = events[year][month][day];
+                            const eventDiv = document.createElement('a');
+                            dayEvents.forEach(event => {
+
+                                const { name, embeddedLink, color } = event;
+                                if (name || color || embeddedLink) {
+                                    if (embeddedLink) {
+                                        eventDiv.href = embeddedLink;
+                                    }
+                                    if (color) {
+                                        eventDiv.style.setProperty('--bullet-color', color);
+                                    }
+                                    if (name) {
+                                        eventDiv.textContent = name;
+                                        eventDiv.textContent = `${month} ${day} - ${name}`;
+
+                                    }
+                                    // div.appendChild(eventDiv);    
+                                eventList.appendChild(eventDiv);
+                                }
+                            });
+                        }
+                    }
+                }
+            
+        
+
+
+            }
+
 
             function updateCalendar(monthName, days) {
                 const calendar = document.querySelector('.calendar');
@@ -62,7 +101,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const firstDayOfMonth = new Date(year, month, 1).getDay();
                 const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
-
 
                 // Insert empty days to align the 1st of the month to Sunday
                 for (let i = 0; i < firstDayOfMonth; i++) {
@@ -92,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     const div = document.createElement('div');
                     div.className = 'calendar-day__content';
-                    // console.log(day.days["2024"]["January"]);
+
                     const eventDiv = document.createElement('a');
                     days[day].forEach(event => {
                                 const { name, embeddedLink, color } = event;
@@ -100,30 +138,28 @@ document.addEventListener('DOMContentLoaded', function () {
                                     if (embeddedLink) {
                                         eventDiv.href = embeddedLink;
                                     }
-                            
-                                    // Check if color exists before setting background color
                                     if (color) {
                                         eventDiv.style.backgroundColor = color;
                                     }
-                            
-                                    // Check if name exists before setting text content
                                     if (name) {
                                         eventDiv.textContent = name;
                                     }
-                                    div.appendChild(eventDiv);         
-                                    console.log(name, embeddedLink, color);
-                                    console.log('Event details:', { name, embeddedLink, color });
-                                    console.log('Event element:', eventDiv);
+                                    div.appendChild(eventDiv);    
+
+     
+                                    // console.log(name, embeddedLink, color);
+                                    // console.log('Event details:', { name, embeddedLink, color });
+                                    // console.log('Event element:', eventDiv);
                                 }
                         })
-            
-
-                    
 
                     li.appendChild(div);
                     calendar.appendChild(li);
                 }
+
+                // Calculates dau of the week based on the month
                 const remainingDays = (7 - (lastDayOfMonth + firstDayOfMonth - 1) % 7) % 7;
+                // Calculates day of the week for the last day of the month
                 for (let i = 0; i < remainingDays; i++) {
                     const li = document.createElement('li');
                     li.className = 'calendar-day empty';
@@ -160,6 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
             eventMonth.selectedIndex = currentMonth;
             updateDateInfo();
             updateDays();
+            addEventList()
         })
         .catch(error => console.error('Error fetching events:', error));
 });
